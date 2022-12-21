@@ -110,11 +110,23 @@ button[type='submit']:hover {
 }
 
 
-#hide, #hideMessage {
+#hide, #hideMessage, #hide2 {
     transform: scale(0);
 }
 
 .errorMessage {
     color: red;
     font-size: .8rem;
+}
+
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading img {
+    height: 40px;
+    width: 40px;
 }
