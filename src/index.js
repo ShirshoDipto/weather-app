@@ -37,6 +37,8 @@ function displayWeatherData(data) {
     const dateAndTime = document.querySelector('.date-and-time');
     dateAndTime.textContent = `${dateAndTimeStrings[0]}, ${dateAndTimeStrings[1]}`;
 
+
+    loading.setAttribute('id', 'hide2');
     // show the html element
     const results = document.querySelectorAll('#hide');
     results.forEach(result => {
@@ -62,7 +64,6 @@ function extractData(weatherObject) {
 }
 
 
-
 async function getWeatherData(location, lat=null, lon=null) {
     let response;
     if (lat !== null && lon !== null) {
@@ -81,6 +82,7 @@ async function getWeatherData(location, lat=null, lon=null) {
     else {
         const errorMessage = document.querySelector('.errorMessage');
         errorMessage.removeAttribute('id');
+        loading.setAttribute('id', 'hide2');
     }
 }
 
@@ -105,10 +107,13 @@ function showPosition(position) {
 getLocation();
 
 const form = document.querySelector('form');
+const loading = document.querySelector('.loading');
+loading.removeAttribute('id');
 form.onsubmit = (e) => {
     e.preventDefault();
     const errorMessage = document.querySelector('.errorMessage');
     errorMessage.setAttribute('id', 'hideMessage');
     const input = document.querySelector('form input');
     getWeatherData(input.value.trim());
+    loading.removeAttribute('id');
 };
