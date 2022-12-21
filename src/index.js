@@ -110,5 +110,5 @@ form.onsubmit = (e) => {
     const errorMessage = document.querySelector('.errorMessage');
     errorMessage.setAttribute('id', 'hideMessage');
     const input = document.querySelector('form input');
-    getWeatherData(input.value);
+    getWeatherData(input.value.trim());
 };
