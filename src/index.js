@@ -1,17 +1,11 @@
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-    } else { 
-        alert("Geolocation is not supported by this browser.");
-    }
-}
-  
-function showPosition(position) {
-    console.log(position);
-    lati = position.coords.latitude;
-    longi = position.coords.longitude;
-    console.log(lati);
-    console.log(longi);
+
+function getDateAndTime(timezone) {
+    const x = new Date().getTime();
+    const d = new Date(x+timezone*1000);
+    const dateTime = new Date(d.toISOString().slice(0, -1));
+    const dateString = dateTime.toDateString();
+    const timeString = dateTime.toLocaleTimeString();
+    return [ dateString, timeString ];
 }
 
 
@@ -37,7 +31,17 @@ function displayWeatherData(data) {
 
     const city = document.querySelector('.city');
     city.textContent = `${data.city}, ${data.countryCode}`;
-    console.log(logo);
+
+    const dateAndTimeStrings = getDateAndTime(data.timezone);
+    console.log(dateAndTimeStrings);
+    const dateAndTime = document.querySelector('.date-and-time');
+    dateAndTime.textContent = `${dateAndTimeStrings[0]}, ${dateAndTimeStrings[1]}`;
+
+    // show the html element 
+    const results = document.querySelectorAll('#hide');
+    results.forEach(result => {
+        result.removeAttribute('id');
+    });
 }
 
 
@@ -56,6 +60,7 @@ function extractData(weatherObject) {
     necessaryDatas.timezone = weatherObject.timezone;
     return necessaryDatas;
 }
+
 
 
 async function getWeatherData(location, lat=null, lon=null) {
@@ -80,14 +85,24 @@ async function getWeatherData(location, lat=null, lon=null) {
 }
 
 
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+        alert("Geolocation is not supported by this browser.");
+    }
+}
+
+  
+function showPosition(position) {
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+    getWeatherData(null, lat, lon);
+}
+
+
 // MAIN
-let lati = 0;
-let longi = 0;
 getLocation();
-console.log(lati);
-console.log(longi);
-getWeatherData(null, lati, longi);
-console.log('hi there');
 
 const form = document.querySelector('form');
 form.onsubmit = (e) => {
